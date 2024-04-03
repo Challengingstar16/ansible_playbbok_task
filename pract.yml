@@ -1,0 +1,15 @@
+---
+- name: operations
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: install httpd
+      yum:
+        pkg: httpd
+        state: present
+    - name: start service
+      service:
+        name: httpd
+        state: started
