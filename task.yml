@@ -1,0 +1,30 @@
+---
+- name: tasks
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: update system
+      command: sudo yum update -y
+    - name: check for docker service
+      command: systemctl is-active docker
+      register: docker_service_status
+      ignore_errors: true
+    - name: install docker
+      command: yum install docker -y
+    - name: check docker version
+      command: docker --version
+    - name: pull nginx image
+      command: docker pull nginx
+    - name: run nginx container
+      command: docker run -it -d nginx
+    - name: snapshot of container
+      shell: docker commit a32b880f3e87 pallavi19/task
+    - name: push into docker hub
+      shell: docker push pallavi19/task
+    - name: print succesfully
+      debug: 
+        msg:
+         "operation successfull" 
+    
